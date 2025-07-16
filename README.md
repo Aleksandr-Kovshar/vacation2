@@ -1,70 +1,166 @@
-# Getting Started with Create React App
+<!-- логика на JS -->
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+let available = 1; // Доступно днів
+let used = 1; // Використано днів
+const remaining = available - used; // Залишилось днів
 
-## Available Scripts
+const maxNotDivide = 14;
+const maxDivide = 13;
+const totalMax = maxNotDivide + maxDivide; // 27
 
-In the project directory, you can run:
+let usedNotDivide = 0;
+let usedDivide = 0;
 
-### `npm start`
+// Можно использовать сейчас подільних/не подільних:
+let NotDivide = 0;
+let Divide = 0;
+let NotDivide_Alt = 0;
+let Divide_Alt = 0;
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
+// Остаток общий на год:
 
-The page will reload when you make changes.\
-You may also see any lint errors in the console.
+let remainderNotDivide = 0;
+let remainderDivide = 0;
+let remainderTotal = remainderNotDivide + remainderDivide;
 
-### `npm test`
+function calculate(available, used, remaining) {
+const basicInformation = `Всього на рік надається ${totalMax} днів відпустки.  Із них ${maxNotDivide} можна використати тільки неподільно підряд, ${maxDivide} як завгодно.`;
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+// if (used >= maxNotDivide) {
+// usedNotDivide = maxNotDivide;
+// } else {
+// usedNotDivide = 0;
+// }
 
-### `npm run build`
+// if (used === maxDivide || used === totalMax) {
+// usedDivide = maxDivide;
+// } else if (used < maxDivide) {
+// usedDivide = used;
+// } else if (used > maxDivide) {
+// usedDivide = used - usedNotDivide;
+// }
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+if (used === 0) {
+usedNotDivide = 0;
+usedDivide = 0;
+} else if (used > 0 && used < maxDivide) {
+usedNotDivide = 0;
+usedDivide = used;
+} else if (used === maxDivide) {
+usedNotDivide = 0;
+usedDivide = used - usedNotDivide;
+} else if (used === maxNotDivide) {
+usedNotDivide = maxNotDivide;
+usedDivide = used - usedNotDivide;
+} else if (used > maxNotDivide && used < totalMax) {
+usedNotDivide = maxNotDivide;
+usedDivide = used - usedNotDivide;
+} else if (used === totalMax) {
+usedNotDivide = maxNotDivide;
+usedDivide = maxDivide;
+}
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+message = `Використано ${usedDivide} днів подільної відпустки і ${usedNotDivide} неподільної відпустки`;
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+// Общий остаток на год подільних і неподільних
+remainderNotDivide = maxNotDivide - usedNotDivide;
+remainderDivide = maxDivide - usedDivide;
 
-### `npm run eject`
+// Вычисляем что сейчас можно использовать, включая альтернативу
 
-**Note: this is a one-way operation. Once you `eject`, you can't go back!**
+if (maxDivide - usedDivide >= remaining) {
+Divide = remaining;
+} else {
+Divide = maxDivide - usedDivide;
+}
 
-If you aren't satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+NotDivide = remaining - Divide;
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you're on your own.
+if (remaining >= maxNotDivide) {
+NotDivide_Alt = maxNotDivide;
+Divide_Alt = remaining - NotDivide_Alt;
+}
 
-You don't have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn't feel obligated to use this feature. However we understand that this tool wouldn't be useful if you couldn't customize it when you are ready for it.
+console.log(message);
 
-## Learn More
+console.log(
+`Доступно на зараз подільної: ${Divide}, Неподільної: ${NotDivide} АБО подільної: ${Divide_Alt}, Неподільної: ${NotDivide_Alt} `
+);
 
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
+return message;
+}
 
-To learn React, check out the [React documentation](https://reactjs.org/).
+calculate(available, used, remaining);
 
-### Code Splitting
+function findUserMassage(
+available,
+used,
+remaining,
+usedNotDivide,
+usedDivide,
+NotDivide,
+Divide,
+NotDivide_Alt,
+Divide_Alt
+) {
+let userMassage = "";
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
+if (available === 0) {
+userMassage = "У тебе ще немає доступних днів відпустки";
+} else if (usedDivide === maxDivide && usedNotDivide === maxNotDivide) {
+userMassage = "Вся відпустка вже використана";
+} else if (remaining === 0) {
+userMassage = "У тебе ще немає доступних днів відпустки";
+} else if (Divide !== 0 && NotDivide === 0) {
+userMassage = `Є ${Divide} днів подільної відпустки`;
+} else if (Divide === 0 && NotDivide !== 0 && NotDivide !== maxNotDivide) {
+userMassage = `Є ${NotDivide} днів неподільної відпустки, для використання якої потрібно мати ${maxNotDivide} днів`;
+} else if (Divide === 0 && NotDivide !== 0 && NotDivide === maxNotDivide) {
+userMassage = `Доступно для використання ${NotDivide} днів неподільної відпустки.`;
+} else if (
+Divide !== 0 &&
+NotDivide !== 0 &&
+NotDivide === 14 &&
+NotDivide_Alt === 0
+) {
+userMassage = `Доступно для використання ${NotDivide} днів неподільної відпустки і ${Divide} днів подільної відпустки.`;
+} else if (
+Divide !== 0 &&
+NotDivide !== 0 &&
+NotDivide < 14 &&
+NotDivide_Alt === 0
+) {
+userMassage = `Можна використати ${Divide} днів подільної відпустки і є ${NotDivide} днів неподільної відпустки, для використання якої потрібно мати ${maxNotDivide} днів.`;
+} else if (
+Divide !== 0 &&
+NotDivide !== 0 &&
+NotDivide < 14 &&
+NotDivide_Alt !== 0
+) {
+userMassage = `Можна використати ${NotDivide_Alt} днів неподільної відпустки і ${Divide_Alt} днів подільної. АБО ${Divide} днів подільної відпустки і залишиться ${NotDivide} днів неподільної відпустки, для використання якої потрібно мати ${maxNotDivide} днів.`;
+} else if (
+Divide !== 0 &&
+NotDivide !== 0 &&
+NotDivide === 14 &&
+NotDivide_Alt !== 0
+) {
+userMassage = `Можна використати ${Divide} днів подільної відпустки і ${NotDivide} днів неподільної відпустки.`;
+} else {
+userMassage = "Щось пішло не так, перевір дані";
+}
 
-### Analyzing the Bundle Size
+console.log(userMassage);
+return userMassage;
+}
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
-
-### Making a Progressive Web App
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
-
-### Advanced Configuration
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
-
-### Deployment
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
-
-### `npm run build` fails to minify
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
+findUserMassage(
+available,
+used,
+remaining,
+usedNotDivide,
+usedDivide,
+NotDivide,
+Divide,
+NotDivide_Alt,
+Divide_Alt
+);
