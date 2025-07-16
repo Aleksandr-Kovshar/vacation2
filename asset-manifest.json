@@ -1,0 +1,13 @@
+{
+  "files": {
+    "main.css": "/vacation2/static/css/main.025d0129.css",
+    "main.js": "/vacation2/static/js/main.5ed955eb.js",
+    "index.html": "/vacation2/index.html",
+    "main.025d0129.css.map": "/vacation2/static/css/main.025d0129.css.map",
+    "main.5ed955eb.js.map": "/vacation2/static/js/main.5ed955eb.js.map"
+  },
+  "entrypoints": [
+    "static/css/main.025d0129.css",
+    "static/js/main.5ed955eb.js"
+  ]
+}
