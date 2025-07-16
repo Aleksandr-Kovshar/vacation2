@@ -1,6 +1,6 @@
 <!-- логика на JS -->
 
-let available = 1; // Доступно днів
+<!-- let available = 1; // Доступно днів
 let used = 1; // Використано днів
 const remaining = available - used; // Залишилось днів
 
@@ -163,4 +163,4 @@ NotDivide,
 Divide,
 NotDivide_Alt,
 Divide_Alt
-);
+); -->
