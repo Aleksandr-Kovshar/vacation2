@@ -126,7 +126,11 @@ export default function VacationCalculator() {
             min="0"
             max="27"
             value={available}
-            onChange={(e) => setAvailable(Number(e.target.value))}
+            onChange={(e) => {
+              const val = Math.min(+e.target.value, 27);
+              setAvailable(val);
+              if (used > val) setUsed(val); // обнуляємо used, якщо більше
+            }}
           />
         </div>
         <div>
@@ -136,7 +140,10 @@ export default function VacationCalculator() {
             min="0"
             max={available}
             value={used}
-            onChange={(e) => setUsed(Number(e.target.value))}
+            onChange={(e) => {
+              const val = Math.min(+e.target.value, available);
+              setUsed(val);
+            }}
           />
         </div>
         <div>
